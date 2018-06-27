@@ -11,8 +11,8 @@ class HomeContainer extends Component {
         tasks: PropTypes.instanceOf(List).isRequired
     }
 
-    shouldComponentUpdate (nextProps) {
-        return nextProps.tasks !== this.props.tasks;
+    shouldComponentUpdate (props) {
+        return props.tasks !== this.props.tasks;
     }
 
     render () {

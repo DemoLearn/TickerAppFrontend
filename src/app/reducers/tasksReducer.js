@@ -1,13 +1,7 @@
 import { List } from 'immutable';
 
 
-export default (currentState = null, action) => {
-
-    let state = currentState;
-
-    if (state === null) {
-        state = new List();
-    }
+export default (state = new List(), action) => {
 
     switch (action.type) {
 

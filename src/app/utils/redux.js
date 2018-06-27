@@ -9,9 +9,11 @@ import { Record } from 'immutable';
  * @return {Function} Combined reducer.
  */
 export const combineReducers = reducers => {
+    const currentState = void 0;
+    const initAction = { type: null };
     const initialState = Object.keys(reducers).reduce((result, reducerKey) => ({
         ...result,
-        [reducerKey]: reducers[reducerKey].call(null, null, {})
+        [reducerKey]: reducers[reducerKey].call(null, currentState, initAction)
     }), {});
     return combineImmutableReducers(reducers, Record(initialState));
 };
