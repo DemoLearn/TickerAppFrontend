@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { List } from 'immutable';
+import { Map } from 'immutable';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import TasksComponent from '../components/tasks/TasksComponent';
+import { getTasks } from '../actions/tasksActions';
 
 
 class HomeContainer extends Component {
 
     static propTypes = {
-        tasks: PropTypes.instanceOf(List).isRequired
+        tasks: PropTypes.instanceOf(Map).isRequired,
+        getTasks: PropTypes.func.isRequired
+    }
+
+    componentDidMount () {
+        this.props.getTasks();
     }
 
     shouldComponentUpdate (props) {
@@ -16,6 +23,23 @@ class HomeContainer extends Component {
     }
 
     render () {
+        return (
+            <div>
+                {this.renderError()}
+                {this.renderTasks()}
+            </div>
+        );
+    }
+
+    renderError () {
+        const error = this.props.tasks.get('error');
+        if (error !== null) {
+            return <div>An error occurred: {error}</div>;
+        }
+        return null;
+    }
+
+    renderTasks () {
         return (
             <TasksComponent
                 tasks={this.props.tasks}
@@ -25,6 +49,12 @@ class HomeContainer extends Component {
 
 }
 
-export default connect(({ tasks }) => ({
+const mapStateToProps = ({ tasks }) => ({
     tasks
-}))(HomeContainer);
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    getTasks
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);
